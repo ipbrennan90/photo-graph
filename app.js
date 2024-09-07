@@ -31,12 +31,14 @@ async function SaveMedia(mediaItem) {
   console.log(cloudinary.config().cloud_name);
   let resourceType = "image";
 
+  console.log(`==================EXTENSIONNNNNNNNN ${extension}`);
   if (
     extension === ".mp4" ||
     extension === ".m4a" ||
     extension === ".f4v" ||
     extension === ".m4b" ||
-    extension === ".mov"
+    extension === ".mov" ||
+    extension === ".3gpp"
   ) {
     resourceType = "video";
   }
@@ -44,7 +46,7 @@ async function SaveMedia(mediaItem) {
   cloudinary.uploader
     .upload(mediaUrl, {
       // image is the default resource type if you don't specify
-      resource_type: resourceType,
+      resource_type: "auto",
     })
     .then((result) => {
       // JSON.stringify will provide a formatted string
@@ -59,9 +61,7 @@ async function SaveMedia(mediaItem) {
 }
 
 async function handleIncomingSMS(req, res) {
-  console.log(req);
   const { body } = req;
-  console.log(body);
   const { NumMedia, From: SenderNumber, MessageSid } = body;
   let saveOperations = [];
   const mediaItems = [];
