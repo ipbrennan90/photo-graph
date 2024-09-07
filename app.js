@@ -73,24 +73,24 @@ function MessagingRouter() {
   }
 
   async function handleIncomingSMS(req, res) {
-    const { body } = req;
-    const { NumMedia, From: SenderNumber, MessageSid } = body;
-    let saveOperations = [];
-    const mediaItems = [];
+    // const { body } = req;
+    // const { NumMedia, From: SenderNumber, MessageSid } = body;
+    // let saveOperations = [];
+    // const mediaItems = [];
 
-    for (var i = 0; i < NumMedia; i++) {
-      // eslint-disable-line
-      const mediaUrl = body[`MediaUrl${i}`];
-      const contentType = body[`MediaContentType${i}`];
-      const extension = extName.mime(contentType)[0].ext;
-      const mediaSid = path.basename(urlUtil.parse(mediaUrl).pathname);
-      const filename = `${mediaSid}.${extension}`;
+    // for (var i = 0; i < NumMedia; i++) {
+    //   // eslint-disable-line
+    //   const mediaUrl = body[`MediaUrl${i}`];
+    //   const contentType = body[`MediaContentType${i}`];
+    //   const extension = extName.mime(contentType)[0].ext;
+    //   const mediaSid = path.basename(urlUtil.parse(mediaUrl).pathname);
+    //   const filename = `${mediaSid}.${extension}`;
 
-      mediaItems.push({ mediaSid, MessageSid, mediaUrl, filename, extension });
-      saveOperations = mediaItems.map((mediaItem) => SaveMedia(mediaItem));
-    }
+    //   mediaItems.push({ mediaSid, MessageSid, mediaUrl, filename, extension });
+    //   saveOperations = mediaItems.map((mediaItem) => SaveMedia(mediaItem));
+    // }
 
-    await Promise.all(saveOperations);
+    // await Promise.all(saveOperations);
 
     const messageBody =
       NumMedia === 0
