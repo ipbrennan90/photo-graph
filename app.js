@@ -62,6 +62,7 @@ async function SaveMedia(mediaItem) {
 
 async function handleIncomingSMS(req, res) {
   const { body } = req;
+  console.log(body);
   const { NumMedia, From: SenderNumber, MessageSid } = body;
   // let saveOperations = [];
   // const mediaItems = [];
