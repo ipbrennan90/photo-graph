@@ -1,14 +1,12 @@
 var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 const Twilio = require("twilio");
 const extName = require("ext-name");
 const urlUtil = require("url");
-const fs = require("fs");
 const config = require("./config.js");
-
+const { urlencoded } = require("body-parser");
+const path = require("path");
 const PUBLIC_DIR = "./public/mms_images";
 const {
   twilioPhoneNumber,
@@ -61,25 +59,26 @@ async function SaveMedia(mediaItem) {
 }
 
 async function handleIncomingSMS(req, res) {
+  console.log(req);
   const { body } = req;
   console.log(body);
   const { NumMedia, From: SenderNumber, MessageSid } = body;
-  // let saveOperations = [];
-  // const mediaItems = [];
+  let saveOperations = [];
+  const mediaItems = [];
 
-  // for (var i = 0; i < NumMedia; i++) {
-  //   // eslint-disable-line
-  //   const mediaUrl = body[`MediaUrl${i}`];
-  //   const contentType = body[`MediaContentType${i}`];
-  //   const extension = extName.mime(contentType)[0].ext;
-  //   const mediaSid = path.basename(urlUtil.parse(mediaUrl).pathname);
-  //   const filename = `${mediaSid}.${extension}`;
+  for (var i = 0; i < NumMedia; i++) {
+    // eslint-disable-line
+    const mediaUrl = body[`MediaUrl${i}`];
+    const contentType = body[`MediaContentType${i}`];
+    const extension = extName.mime(contentType)[0].ext;
+    const mediaSid = path.basename(urlUtil.parse(mediaUrl).pathname);
+    const filename = `${mediaSid}.${extension}`;
 
-  //   mediaItems.push({ mediaSid, MessageSid, mediaUrl, filename, extension });
-  //   saveOperations = mediaItems.map((mediaItem) => SaveMedia(mediaItem));
-  // }
+    mediaItems.push({ mediaSid, MessageSid, mediaUrl, filename, extension });
+    saveOperations = mediaItems.map((mediaItem) => SaveMedia(mediaItem));
+  }
 
-  // await Promise.all(saveOperations);
+  await Promise.all(saveOperations);
 
   const messageBody =
     NumMedia === 0
@@ -100,14 +99,12 @@ async function handleIncomingSMS(req, res) {
 
 var app = express();
 
+app.use(logger("dev"));
+app.use(urlencoded({ extended: false }));
+
 app.get("/config", (req, res) => {
   res.status(200).send({ hey: "hi" });
 });
-
 app.post("/incoming", handleIncomingSMS);
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
 module.exports = app;
