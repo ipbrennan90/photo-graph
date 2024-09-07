@@ -73,8 +73,8 @@ function MessagingRouter() {
   }
 
   async function handleIncomingSMS(req, res) {
-    // const { body } = req;
-    // const { NumMedia, From: SenderNumber, MessageSid } = body;
+    const { body } = req;
+    const { NumMedia, From: SenderNumber, MessageSid } = body;
     // let saveOperations = [];
     // const mediaItems = [];
 
