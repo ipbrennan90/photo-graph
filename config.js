@@ -18,5 +18,8 @@ cfg.twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 // Specify in E.164 format, e.g. "+16519998877"
 cfg.twilioPhoneNumber = process.env.TWILIO_NUMBER;
 
+cfg.cloudinarySecret = process.env.CLOUDINARY_SECRET;
+cfg.cloudinaryKey = process.env.CLOUDINARY_KEY
+
 // Export configuration object
 module.exports = cfg;
